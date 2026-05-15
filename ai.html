@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mango – My Favourite Fruit</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      cursor: none;
+    }
+
+    /* 🌴 Tropical animated background */
+    body {
+      background: linear-gradient(135deg, #fff7d6, #ffe0a3);
+      background-size: 400% 400%;
+      animation: bgMove 12s ease infinite, fadeIn 1.2s ease forwards;
+      color: #3b2a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* 🍃 Falling leaves */
+    @keyframes fallLeaf {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+    }
+
+    .leaf-fall {
+      position: fixed;
+      top: -50px;
+      font-size: 1.8rem;
+      animation: fallLeaf linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    /* ✨ Glow */
+    .glow {
+      text-shadow: 0 0 12px rgba(255, 170, 0, 0.8);
+    }
+
+    /* 🔥 Mango cursor trail */
+    .cursor-mango {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.4rem;
+      animation: fadeOut 1s linear forwards;
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.4); }
+    }
+
+    /* 🍹 MANGO JUICE SPLASH */
+    .juice-splash {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,180,0,0.6), rgba(255,140,0,0.2), transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: splashPulse 2.8s infinite ease-in-out;
+      filter: blur(6px);
+      z-index: 1;
+    }
+
+    @keyframes splashPulse {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+    }
+
+    /* 🍹 JUICE DRIP */
+    .juice-drip {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #ff9f1c;
+      border-radius: 50%;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: drip 1.8s infinite ease-in;
+      z-index: 4;
+      box-shadow: 0 0 12px rgba(255,150,0,0.7);
+    }
+
+    @keyframes drip {
+      0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+      70% { transform: translate(-50%, 40px) scale(0.8); opacity: 0.8; }
+      100% { transform: translate(-50%, 70px) scale(0.3); opacity: 0; }
+    }
+
+    .card {
+      background: #fffdf7;
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      max-width: 900px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      overflow: hidden;
+      animation: fadeIn 1.4s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    .content {
+      padding: 32px 32px 28px;
+      animation: fadeIn 1.6s ease;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #ffe7a8;
+      color: #7a4a00;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      animation: float 3s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    .subtitle {
+      font-size: 0.98rem;
+      color: #7a5b3a;
+      margin-bottom: 20px;
+    }
+
+    .highlight {
+      display: inline-block;
+      background: #fff3c4;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #b07a2a;
+      margin: 18px 0 8px;
+    }
+
+    ul {
+      list-style: none;
+      margin-bottom: 10px;
+    }
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    li span.bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 7px;
+      background: #ffb02e;
+      flex-shrink: 0;
+    }
+
+    .fact-box {
+      margin-top: 16px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #fff7d6;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: fadeIn 2s ease;
+    }
+
+    .fact-box strong {
+      color: #b35b00;
+    }
+
+    .emoji {
+      font-size: 1.4rem;
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 0.8rem;
+      color: #9a7a55;
+    }
+
+    .footer span {
+      font-weight: 600;
+      color: #c26a00;
+    }
+
+    .image-side {
+      position: relative;
+      background: radial-gradient(circle at 20% 20%, #ffe9b8, transparent 55%),
+                  radial-gradient(circle at 80% 80%, #ffd18a, transparent 55%),
+                  #ffb02e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 1.8s ease;
+      overflow: visible;
+    }
+
+    .mango {
+      width: 220px;
+      height: 220px;
+      border-radius: 60% 50% 55% 45%;
+      background: radial-gradient(circle at 30% 20%, #fff7c4 0, #ffd66b 30%, #ff9f1c 70%, #f77f00 100%);
+      position: relative;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      transform: rotate(-18deg);
+      animation: float 3s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    .mango::before {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #ffffff 0, #ffe9a3 40%, transparent 70%);
+      top: 18%;
+      left: 18%;
+      opacity: 0.9;
+    }
+
+    .leaf {
+      position: absolute;
+      width: 90px;
+      height: 40px;
+      background: linear-gradient(135deg, #3fa34d, #1f7a35);
+      border-radius: 100px;
+      top: -10px;
+      right: 10px;
+      transform: rotate(18deg);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .leaf::before {
+      content: "";
+      position: absolute;
+      inset: 50% 12px auto 12px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.7);
+      transform: translateY(-50%);
+    }
+
+    .seed-label {
+      position: absolute;
+      bottom: 18px;
+      right: 24px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: #b35b00;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .seed-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffb02e;
+    }
+
+    /* 🎵 Music button */
+    #musicBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ffb02e;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      z-index: 20;
+      transition: 0.3s;
+    }
+
+    #musicBtn:hover {
+      background: #ff9a00;
+      transform: scale(1.08);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 🍃 Falling leaves -->
+  <script>
+    const leaves = ["🍃", "🍂", "🥭"];
+    for (let i = 0; i < 18; i++) {
+      let leaf = document.createElement("div");
+      leaf.className = "leaf-fall";
+      leaf.innerHTML = leaves[Math.floor(Math.random() * leaves.length)];
+      leaf.style.left = Math.random() * 100 + "vw";
+      leaf.style.animationDuration = 4 + Math.random() * 6 + "s";
+      leaf.style.fontSize = 1.2 + Math.random() * 2 + "rem";
+      document.body.appendChild(leaf);
+    }
+  </script>
+
+  <!-- 🔥 Mango cursor trail -->
+  <script>
+    document.addEventListener("mousemove", e => {
+      const mango = document.createElement("div");
+      mango.className = "cursor-mango";
+      mango.innerHTML = "🥭";
+      mango.style.left = e.pageX + "px";
+      mango.style.top = e.pageY + "px";
+      document.body.appendChild(mango);
+      setTimeout(() => mango.remove(), 900);
+    });
+  </script>
+
+  <!-- 🎵 Background music -->
+  <audio id="bgMusic" loop>
+    <source src="videoplayback.mp3" type="audio/mp3">
+  </audio>
+
+  <button id="musicBtn">🎵 Music</button>
+
+  <script>
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+    let playing = false;
+
+    // Music starts on first click anywhere
+    document.addEventListener("click", () => {
+      if (!playing) {
+        music.volume = 1.0;
+        music.play();
+        btn.innerText = "⏸️ Pause";
+        playing = true;
+      }
+    }, { once: true });
+
+    btn.onclick = () => {
+      if (playing) {
+        music.pause();
+        btn.innerText = "🎵 Music";
+      } else {
+        music.play();
+        btn.innerText = "⏸️ Pause";
+      }
+      playing = !playing;
+    };
+  </script>
+
+  <main class="card">
+    <section class="content">
+      <div class="tag glow">Favourite fruit</div>
+      <h1 class="glow">Mango: the king of fruits</h1>
+      <p class="subtitle">
+        Sweet, juicy, and ridiculously satisfying—mango is my undisputed number one.
+        Every season feels better with a <span class="highlight glow">perfectly ripe mango</span>.
+      </p>
+
+      <h2 class="section-title glow">Why I love mango</h2>
+      <ul>
+        <li><span class="bullet"></span><strong>Flavour:</strong> That mix of sweetness and tropical tang is unbeatable.</li>
+        <li><span class="bullet"></span><strong>Texture:</strong> Smooth, juicy, and soft when it’s perfectly ripe.</li>
+        <li><span class="bullet"></span><strong>Versatility:</strong> Amazing in smoothies, desserts, salads—or just eaten over the sink.</li>
+      </ul>
+
+      <h2 class="section-title glow">More Fun Facts</h2>
+      <ul>
+        <li><span class="bullet"></span>Mangoes are related to cashews and pistachios.</li>
+        <li><span class="bullet"></span>There are over 500+ mango varieties worldwide.</li>
+        <li><span class="bullet"></span>Mango is the national fruit of India, Pakistan, and the Philippines.</li>
+        <li><span class="bullet"></span>The oldest mango tree is over 300 years old and still produces fruit.</li>
+        <li><span class="bullet"></span>Mangoes were first grown in India over 4,000 years ago.</li>
+      </ul>
+
+      <div class="fact-box glow">
+        <span class="emoji">🥭</span>
+        <span><strong>Fun fact:</strong> There are hundreds of mango varieties—each with its own flavour, aroma, and personality.</span>
+      </div>
+
+      <p class="footer">
+        This page is dedicated to my favourite fruit: <span class="glow">Mango</span>.
+      </p>
+    </section>
+
+    <aside class="image-side">
+
+      <!-- 🍹 MANGO JUICE SPLASH -->
+      <div class="juice-splash"></div>
+
+      <!-- 🍹 JUICE DRIP -->
+      <div class="juice-drip"></div>
+
+      <div class="mango glow">
+        <div class="leaf"></div>
+        <div class="seed-label">
+          <span class="seed-dot"></span>
+          <span>100% mango energy</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>
+
